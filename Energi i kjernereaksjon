@@ -1,0 +1,28 @@
+c = 3.00e8 #m/s
+u = 1.66e-27 #kg
+sum_reaktanter = 0
+sum_produkter = 0
+
+m_r1 = float(input("Hva er massen på reaktant 1? "))
+
+sum_reaktanter = m_r1
+
+svar = input("Er det flere reaktanter? ")
+
+while svar == "j":
+    m_r2 = float(input("Hva er massen neste reaktant? "))
+    sum_reaktanter = sum_reaktanter + m_r2
+    svar = input("Er det flere reaktanter? ")
+
+m_p1 = float(input("Hva er massen på produkt 1? "))
+sum_produkter = m_p1
+svar = input("Er det flere produkter? ")
+
+while svar == "j":
+    m_p2 = float(input("Hva er massen på neste reaktant? " ))
+    sum_produkter = sum_produkter + m_p2
+    svar = input("Er det flere reaktanter? ")
+delta_m = (sum_reaktanter - sum_produkter)*u
+E_r = delta_m*c**2
+
+print("Denne kjernereaksjonen slipper ut", "{:.2e}".format(E_r), "Joule energi.")
