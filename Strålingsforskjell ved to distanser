@@ -1,0 +1,41 @@
+# Importerer alt fra biblioteket "math"
+from math import *
+ 
+# Definerer nyttige konstanter
+SB = 5.67e-8    # Stefran-Boltzmanns konstant, i W/m^2K^4
+ 
+# Konstanter for Sola
+T_sol = 5778        # Overflatetemperatur sola, i kelvin
+r_sol = 6.96e8      # Radius sola, i meter
+ 
+ 
+# Konstanter for jorda
+a_jordsol = 1.47e11
+a2_jordsol = 1.52e11  # Avstand mellom jorda og sola (overflate til overflate), i meter
+r_jord = 6.371e3     # Radius jorda, i meter
+T_jord = 288.15      # Faktisk Gjennomsnittstemperatur på jorda, i kelvin
+ 
+# _____________________________________________________________________________
+ 
+U_sol = SB * T_sol**4      # Utstrålingstettheten til sola (SB-lov)
+ 
+P_sol = U_sol * 4 * pi * (r_sol ** 2)      # Utstrålt effekt sola
+ 
+# utregning for første distanse
+I_jord = (P_sol / (4* pi * (a_jordsol **2))) / 4 # Mottatt innstrålingstetthet fra sola på jorda
+ 
+T_modell = ((I_jord/SB)**0.25 )     # Beregner overflatetemperatur på jorda utifra størrelsene over
+ 
+# ny utregning for lenger distanse
+I_jord2 = (P_sol / (4* pi * (a2_jordsol **2))) / 4 # Mottatt innstrålingstetthet fra sola på jorda
+ 
+T_modell2 = ((I_jord2/SB)**0.25 )     # Beregner overflatetemperatur på jorda utifra størrelsene over
+ 
+ 
+print('Overflatetemperatur ved distanse ', a_jordsol, '/ perihel:', round(T_modell,2), 'Kelvin',
+      '\nOverflatetemperatur ved distanse ',a_jordsol, '/ perheli:', round(T_modell - 273.15, 2), 'Celsius',
+      '\nOverflatetemperatur ved distanse ', a2_jordsol, '/ aphel:', round(T_modell2,2), 'Kelvin',
+      '\nOverflatetemperatur ved distanse ',a2_jordsol, '/ aphel:', round(T_modell2 - 273.15, 2), 'Celsius',
+      #'\navvik fra reel verdi på omtrent', round(T_jord - T_modell,2), 'Kelvin / Celcius',
+      '\nForskjell i temperatur mellom perihel og aphel er', T_modell - T_modell2, 'Kelvin / Celsius', 
+      '\nEndring i innstrlingstetthet:', (I_jord2-I_jord)/I_jord*100, '%')
