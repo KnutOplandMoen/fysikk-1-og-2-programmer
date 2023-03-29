@@ -1,0 +1,23 @@
+from math import *
+
+vx = 1.3
+g = 9.81
+h = 0.725
+
+vy = 0
+x = 0 
+
+t = 0 
+dt = 0.01
+
+y = 0
+
+while y < h:
+    vy = vy+dt*g
+    x = x + vx*dt
+    y = y+vy*dt+0.5*g*dt**2
+    t =  t + dt
+
+print('ballen lander etter', round(t, 2), 'sekunder')
+print('ballen lander ', round(x, 2), 'meter fra start')
+print('momentanfarten til ballen er', round(sqrt(vy**2+vx**2), 2))
