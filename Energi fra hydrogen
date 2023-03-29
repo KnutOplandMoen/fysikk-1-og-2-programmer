@@ -1,0 +1,11 @@
+Energi1 = int(input('skriv inn høyeste skall: '))
+Energi2 = int(input('skriv inn laveste skall: '))
+ 
+def finneenergi(skallnr):
+    return (-2.18e-18)/skallnr**2
+ 
+def energidifferanse(skall1, skall2):
+    return finneenergi(skall1) - finneenergi(skall2)
+
+energidifferanse = energidifferanse(Energi1, Energi2)
+print(energidifferanse)
