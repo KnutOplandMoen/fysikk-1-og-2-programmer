@@ -1,0 +1,28 @@
+from math import *
+#Klimamodell med drivhuseffekt (ett lag)
+#--------------Konstanter------------------------------------------------------
+SB=5.67*10**(-8)    #Stefran-Boltzmanns konstant
+#Konstanter Sola
+T_s=5778            #Overflatetemperatur sola i kelvin
+r_s=6.96*10**8      #Radius sola
+
+#Konstanter jorda
+a_js=1.49*10**11    #Avstand mellom jorda og sola (overflate til overflate)
+r_j=6.371*10**3     #Radius jorda
+albedo_j=0.30       #Anslått verdi på jordas albedo
+T_j=290.05          #Gjennomsnittstemperatur på jorda i kelvin
+#-----------------------------------------------------------------------------
+U_kilde=SB*T_s**4                   #Utstrålingstettheten til sola (SB-lov)
+
+P_kilde=U_kilde*4*pi*r_s**2         #Utstrålt effekt sola
+I_jord=P_kilde/(4*pi*a_js**2)       #Mottatt innstrålingstetthet fra sola på jorda
+
+#Beregner overflatetemperatur på jorda og i atmosfæren
+#Uttrykkene for de to temperaturene kommer fra likningssettet for strålingsbalansen
+#Løst for T_jord og T_atm i CAS
+absorbert = 1.0
+T_atm = ((1/4*I_jord * (1-albedo_j))/((SB*(2-absorbert))/absorbert))**0.25
+T_jord = ((2/absorbert)*T_atm**4)**0.25
+
+print('Denne modellen gir en middeltemperatur ved jordoverflaten på',round(T_jord-273.15,1),'grader celsius.')
+print('Det er et avvik på',round(abs(T_j-T_jord),1),'grader fra dagens gjennomsnittstemperatur.')
