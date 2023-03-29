@@ -1,0 +1,115 @@
+"""
+program for å regne ut lengden strikken i en sprettert må trekkes tilbake for
+at en tennisball skal gå ønsket lengde (slutt_x). programmet tar høyde for luftmotstand i både
+x og y retning, og også mistet energi når ballen dras nedover med strikken fra den slippes 
+til den forlater strikken. 
+"""
+#importerer pylab og math bibliotekene 
+from pylab import *
+from math import *
+ 
+start_x = 0 #startposjisjon x
+slutt_x = 8 #avstand til blinken
+ 
+start_y = 1.17 #høyde på sprettert 
+slutt_y = 0 #høyde på blinken 
+ 
+g = 9.81 #gravitasjon akselerasjonen
+m = 0.053 #masse til tennisball 
+ 
+k_luft = 0.5*1.225*0.5*(2*3.14*0.035**2) #k konstant til bruk i luftmotsand utregning 
+k_strikk = 80 #k konstant til strikken
+ 
+theta = radians(30) #vinkelen mellom bakken og strikken
+ 
+ #funksjon for luftmotstandskraften med fart som variabel
+def L(v):            
+    return (k_luft*v**2) #L = k*v**2  
+ 
+dv = 0.01 #endring i fart som testes
+v = 0 #første fart som testes
+ 
+while True:
+    
+    #opretter / nullstiller alle variabler
+    x = start_x #posisjon x retning
+    y = start_y #posisjon y retning
+    vx = v*cos(theta) #fart x retning
+    vy = v*sin(theta) #fart y retning 
+    ax = 0 #akselerasjon x retning
+    ay = -9.81 #akselerasjon y retning
+    tid = 0 #tid
+    
+    #oppretter / nullstiller alle lister
+    axliste = []
+    xliste = []
+    vxliste = []
+    ayliste = []
+    yliste = []
+    vyliste = []
+    tidliste = []
+    
+    v += dv #oppdaterer startfart som skal testes
+    dt = 0.01 #definerer tidsintervall mellom utregninger i while loop under
+    
+    while y >= slutt_y:
+        #legger til verdier i listene
+        axliste.append(ax)
+        vxliste.append(vx)
+        xliste.append(x)
+        ayliste.append(ay)
+        yliste.append(y)
+        vyliste.append(vy)
+        
+        ax = 0 - (L(vx)/m) #oppdaterer akselerasjon i x retning 
+        
+        if vy > 0:
+            ay = -9.81 - (L(vy)/m) #oppdaterer akselerasjonen i y retning når ballen er på vei opp 
+            
+        else:
+           ay = -9.81 + (L(vy)/m) #oppdaterer akselerasjonen i y retning når balenn er på vei ned
+        
+            
+        vx = vx + ax*dt #oppdaterer farten i x retning
+        x += vx*dt #oppdaterer x posisjon
+ 
+        vy += ay*dt #oppdaterer farten i y retning
+        y += vy*dt #oppdaterer y posisjon
+        
+        tid += dt #oppdaterer tid med tidssteget
+        tidliste.append(tid) #legger til tiden i tid listen
+    
+    if x >= slutt_x: #sier at hvis den nye farten som ble testen gjør at ballen kommer 
+        break        #like lang eller lenger enn blinken så skal loopen avbrytes og 
+                     #grunnet at vi har funnet riktig startfart
+ 
+#funksjon som gir ut lengden strikken må strekkes tilbake basert på startfaren man ønsker 
+def strikklengde(startfart):              
+    s = 0.009 #strekningen bakover som startes å teste i m
+    vtest = 0 #variabel som oppdateres med ny fart basert på s
+    ds = 0.000001 #delta s
+    while vtest <= v: #loopen vil gå helt til man opnår ønsket v
+        vtest = math.sqrt(((k_strikk*s**2)-(2*m*g*s*sin(theta)))/m) 
+        s += ds
+    return s #returnerer strikklengden som gir ønsket v0
+ 
+ 
+#printer diverse info 
+print('---------------')   
+print('ballen gikk: ', x, 'm')
+print('tid til sluttposisjon: ', tid, 's')
+print('---------------') 
+print('start momentanfart: ', v, 'm/s')
+print('startfart x: ', v*cos(theta), 'm/s')
+print('sluttfart x: ', vx, 'm/s') 
+print('startfart y: ', v*sin(theta), 'm/s')
+print('sluttfart y: ', vy, 'm/s')
+print('---------------')
+print('dra strikk', strikklengde(v)*100,'cm tilbake')
+print('---------------')
+   
+#plotter simulering på kastet
+plot(xliste,yliste)
+xlabel('lengde')
+ylabel('høyde')
+grid()  
