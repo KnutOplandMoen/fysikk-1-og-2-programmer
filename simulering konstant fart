@@ -1,0 +1,28 @@
+from pylab import *
+
+#under defineres startfart, startposisjon og starttid
+v = 5.0
+s = 0.0
+t = 0.0
+
+#Oppretter to tomme lister for s og t 
+s_liste = []
+t_liste = []
+
+#Vi definerer tidssteg (tid mellom hver beregning) og sluttid
+dt = 0.1
+t_slutt = 3.0
+
+
+#Beregner fortløpende verdier for s og t
+while t < t_slutt:
+    s = s + v*dt
+    t = t + dt
+    s_liste.append(s) #lagrer s i listen min
+    t_liste.append(t) #lagrer t i listen min
+    
+
+plot(t_liste, s_liste, "hotpink")
+xlabel("Tid (s)")
+ylabel("Strekning (m)")
+grid()
