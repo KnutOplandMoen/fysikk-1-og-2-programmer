@@ -1,0 +1,30 @@
+"""
+Vi ønsker å finne ut hvor lang tid det tar for to ladde kuler som starter i ro å treffe hverandre. Anta at det bare er den elektriske kraften mellom kulene som virker.
+"""
+
+q1 = 1e-6
+q2 = -1e-6
+mq1 = 1
+mq2 = 1
+
+q1pos = 0
+q2pos = 2
+q1v = 0
+q2v = 0
+
+def Fe(ladning1, ladning2, radius):
+    return (8.99e9*ladning1*ladning2)/(radius**2)
+
+dt = 0.01
+t = 0
+
+while q1pos < q2pos:
+    a1 = -Fe(q1, q2, (q2pos-q1pos))/mq1
+    a2 = Fe(q1, q2, (q2pos-q1pos))/mq2
+    q1v += a1 * dt
+    q2v += a2 * dt
+    q1pos += q1v * dt
+    q2pos += q2v * dt
+    t += dt
+
+print('tid: ', t)
